@@ -12,18 +12,18 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT type, foreign_id, is_read FROM notifications WHERE retrieved=0";
+$sql = "SELECT id, type, foreign_id, is_read FROM notifications WHERE retrieved=0";
 
-$result = $conn->query($sql);
+$result = mysqli_query($conn, $sql) or die("Error in Selecting " . mysqli_error($conn));
 
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo $row["type"]. "," . $row["foreign_id"]. "," . $row["is_read"]. "<br>";
-  }
-} else {
-  echo "0 results";
+$emparray = array();
+while($row =mysqli_fetch_assoc($result))
+{
+    $emparray[] = $row;
 }
 
+echo json_encode($emparray);
+
+/* close connection */
 $conn->close();
 ?>
