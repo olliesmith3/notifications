@@ -14,10 +14,10 @@ if ($conn->connect_error) {
 
 $id = $_POST['id'];
 
-$sql = "UPDATE notifications SET retrieved = 1 WHERE id = '$id'";
+$sql = "UPDATE notifications SET is_read = 1 WHERE id = '$id'";
 
 if ($conn->query($sql) === TRUE) {
-  echo "Retrieved status updated";
+  echo "Read status updated";
 } else {
   echo "Error: " . $sql . "<br>" . $conn->error;
 }
