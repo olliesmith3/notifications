@@ -7,7 +7,7 @@
 <body>
 <div class="flexWrap">
   <div class="flexCol">
-    <form action='createCalculation.php' method='post' id='calculation-form' >
+    <form action='/redeye/server/createCalculation.php' method='post' id='calculation-form' >
       <p>
       <input type='text' name='name' placeholder='Calulation Name' id='name' />
       </p>
@@ -22,7 +22,7 @@
     </form>
   </div>
   <div class="flexCol">
-    <form action='createEmail.php' method='post' id='email-form' >
+    <form action='/redeye/server/createEmail.php' method='post' id='email-form' >
       <p>
       <input type='text' name='campaign_number' placeholder='Campaign Number' id='campaign_number' />
       </p>

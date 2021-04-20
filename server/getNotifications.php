@@ -12,7 +12,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT id, type, foreign_id, is_read FROM notifications WHERE is_read=0";
+$sql = "SELECT id, type, foreign_id, is_read FROM notifications WHERE is_read=0 ORDER BY type DESC";
 
 $result = mysqli_query($conn, $sql) or die("Error in Selecting " . mysqli_error($conn));
 
