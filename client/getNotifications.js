@@ -1,75 +1,97 @@
-jQuery(function($){
+$( document ).ready(function() {
+  console.log( "ready!" );
+  getNotifications();
+});
+
+$(function($){
   setInterval(function(){
     getNotifications();
   },10000); 
 }); 
 
 const getNotifications = () => {
-  var notifications = [];
-  var html = ""
+  var objects = [];
   $.when( $.get( '/redeye/server/getNotifications.php' )).done(function(data){
-    notifications = JSON.parse(data);
-    console.log(notifications);
-    for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].type == "email") {
+    let notifications = JSON.parse(data);
+    for (let index = 0; index < notifications.length; index++) {
+      if (notifications[index].type == "email") {
         $.when($.ajax({
           type: "GET",
           url: '/redeye/server/getEmailContent.php',
           data: {
-            id: notifications[i].foreign_id
+            id: notifications[index].foreign_id
           },
           success: function(data2){
-            obj = JSON.parse(data2);
-            let row = `<tr>
-              <td>Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>
-              <td><button onclick="markAsRead(${notifications[i].id})">Mark As Read</button></td> 
-            </tr>`;
-            html += row;
+            formatEmailHTML(notifications, objects, data2, index);
           }
         })).done(function(){
-          var output = `<table>
-          <tr>
-            <th>Notification</th>
-            <th></th> 
-          </tr>${html}</table>`
-          $("#notifications").html(output);
+          if (objects.length == notifications.length) {
+            formatNotifications(objects);
+          }
         });
-      } else if (notifications[i].type == "calculation") {
+      } else if (notifications[index].type == "calculation") {
         $.when($.ajax({
           type: "GET",
           url: '/redeye/server/getCalculationContent.php',
           data: {
-            id: notifications[i].foreign_id
+            id: notifications[index].foreign_id
           },
           success: function(data2){
-            obj = JSON.parse(data2);
-            var row = `<tr>
-              <td>Calculation ${obj.name} was completed at ${formatDateTime(obj.timestamp_finished)}</td>
-              <td><button onclick="markAsRead(${notifications[i].id})">Mark As Read</button></td> 
-            </tr>`;
-            html += row;
+            formatCalculationHTML(notifications, objects, data2, index);
           }
         })).done(function(){
-          var output = `<table>
-          <tr>
-            <th>Notification</th>
-            <th></th> 
-          </tr>${html}</table>`
-          $("#notifications").html(output);
+          if (objects.length == notifications.length) {
+            formatNotifications(objects);
+          }
         });
       }
     }
   });
 }
 
-const getEmailContent = (notifications, html, index) => {
-  
+const compare = ( a, b ) => {
+  if ( a.time < b.time ){
+    return 1;
+  }
+  if ( a.time > b.time ){
+    return -1;
+  }
+  return 0;
 }
 
-$( document ).ready(function() {
-  console.log( "ready!" );
-  getNotifications();
-});
+const formatCalculationHTML = (notifications, objects, data2, index) => {
+  obj = JSON.parse(data2);
+  var row = `<tr>
+    <td>Calculation ${obj.name} was completed at ${formatDateTime(obj.timestamp_finished)}</td>
+    <td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td> 
+  </tr>`;
+  let object = {time: obj.timestamp_finished, html: row};
+  objects.push(object);
+}
+
+const formatEmailHTML = (notifications, objects, data2, index) => {
+  obj = JSON.parse(data2);
+  let row = `<tr>
+    <td>Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>
+    <td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td> 
+  </tr>`;
+  let object = {time: obj.timestamp_sent, html: row};
+  objects.push(object);
+}
+
+const formatNotifications = (objects) => {
+  var html = "";
+  sortedNotifications = objects.sort( compare );
+  for (let i = 0; i < objects.length; i++) {
+    html += sortedNotifications[i].html;
+  }
+  var output = `<table>
+  <tr>
+    <th>Notifications</th>
+    <th></th> 
+  </tr>${html}</table>`
+  $("#notifications").html(output);
+}
 
 const formatDateTime = (unformattedDate) => {
   let dateString = unformattedDate.slice(0,10) + "T" + unformattedDate.slice(11,19);
@@ -92,27 +114,3 @@ const markAsRead = (id) => {
     getNotifications();
   });
 }
-
-// jQuery(function($){
-//   var notifications = [];
-//   setInterval(function(){
-//     $.get( 'getNotifications.php', function(data){
-//       var obj = JSON.parse(data);
-//       for (let i = 0; i < obj.length; i++) {
-//         notifications.push(obj[i]);
-//         $.ajax({
-//           type: "POST",
-//           url: 'toggleRetrieved.php',
-//           data: {
-//             id: obj[i].id
-//             },
-//           success: function(data){
-//             console.log(data);
-//           }
-//         });
-//       }
-//     });
-
-//     console.log(notifications);
-//   },10000); 
-// });

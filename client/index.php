@@ -5,6 +5,16 @@
 <link rel="stylesheet" href="index.css">
 </head>
 <body>
+<div id="main">
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="notifications.php">Notifications</a>
+  <a href="index.php">Forms</a>
+  <a href="settings.php">Settings</a>
+</div>
+<span onclick="openNav()">Menu</span>
+<script src="NavBar.js"></script>
+
 <div class="flexWrap">
   <div class="flexCol">
     <form action='/redeye/server/createCalculation.php' method='post' id='calculation-form' >
@@ -39,10 +49,6 @@
 </div>
 <script src="handleFormSubmit.js"></script>
 
-<div>
-  <span id='notifications'></span>
 </div>
-<script src="getNotifications.js"></script>
-
 </body>
 </html>

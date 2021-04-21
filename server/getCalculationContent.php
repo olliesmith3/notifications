@@ -1,27 +1,30 @@
+
+
 <?php
-$servername = "localhost";
-$username = "olliesmith";
-$password = "redeye";
-$dbname = "redeye";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-} 
+include 'database.php';
 
 $id = $_GET['id'];
 
-$sql = "SELECT 'calculation' AS type, name, timestamp_finished FROM calculations WHERE id = '$id'";
+if ($stmt = $mysqli->prepare("SELECT 'calculation' AS type, name, timestamp_finished FROM calculations WHERE id = ?")) {
+  if ( false===$stmt ) {
+    die('prepare() failed: ' . htmlspecialchars($mysqli->error));
+  }
 
-$result = mysqli_query($conn, $sql) or die("Error in Selecting " . mysqli_error($conn));
+  $rc = $stmt->bind_param("s", $id);
+  if ( false===$rc ) {
+    die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+  }
 
-$result2 = mysqli_fetch_assoc($result);
+  $rc = $stmt->execute();
 
-echo json_encode($result2);
+  $result = $stmt->get_result();
+  
+  while ($row = $result->fetch_assoc()) {
+    echo json_encode($row);
+  }
 
-/* close connection */
-$conn->close();
+  $stmt->close();
+} 
+
+$mysqli->close();
 ?>
