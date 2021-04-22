@@ -1,20 +1,19 @@
-<html>
-<head>
-<title>Contour Notifications</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="index.css">
-</head>
-<body>
-<div id="main">
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="notifications.php">Notifications</a>
-  <a href="index.php">Forms</a>
-  <a href="settings.php">Settings</a>
-</div>
-<span onclick="openNav()">open</span>
-<script src="NavBar.js"></script>
-
-</div>
-</body>
-</html>
+<form action='/redeye/server/changeSettings.php' method='post' id='settings-form' >
+  <label for="email-checkbox">Email Notifications On?</label><br>
+  <label class="switch">
+    <input type="checkbox" id="email-checkbox" name="email-checkbox" >
+    <span class="slider round"></span>
+  </label><br />
+  <label for="calculation-checkbox">Calculation Notifications On?</label><br>
+  <label class="switch">
+    <input type="checkbox" id="calculation-checkbox" name="calculation-checkbox" >
+    <span class="slider round"></span>
+  </label><br />
+  <input type="hidden" name="user_id" value=1>
+  <button id='submit-settings'>Save Changes</button>
+  <p id='settings-result'></p>
+</form>
+<script >
+var url = "changeSettings.js";
+$.getScript(url);
+</script>

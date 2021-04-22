@@ -1,14 +1,14 @@
 <?php
 include 'database.php';
 
-$id = $_GET['id'];
+$user_id = $_GET['user_id'];
 
-if ($stmt = $mysqli->prepare("SELECT 'calculation' AS type, name, timestamp_finished FROM calculations WHERE id = ?")) {
+if ($stmt = $mysqli->prepare("SELECT email_notifications_on, calculation_notifications_on FROM notification_settings WHERE user_id_ = ?")) {
   if ( false===$stmt ) {
     die('prepare() failed: ' . htmlspecialchars($mysqli->error));
   }
 
-  $rc = $stmt->bind_param("s", $id);
+  $rc = $stmt->bind_param("s", $user_id);
   if ( false===$rc ) {
     die('bind_param() failed: ' . htmlspecialchars($stmt->error));
   }
@@ -26,3 +26,4 @@ if ($stmt = $mysqli->prepare("SELECT 'calculation' AS type, name, timestamp_fini
 
 $mysqli->close();
 ?>
+
