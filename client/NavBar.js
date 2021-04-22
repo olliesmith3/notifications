@@ -9,6 +9,7 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.getElementById("main").style.marginLeft = "0";
 }
+
 function openNotifications() {
   $.get( '/redeye/client/notifications.php', function( data ) {
     $( "#app" ).html( data );

@@ -11,10 +11,10 @@
 <script src="NavBar.js"></script>
 <div id="main">
 <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="javascript:void(0)" onclick="openNotifications()">Notifications</a>
-  <a href="javascript:void(0)" onclick="openForms()">Forms</a>
-  <a href="javascript:void(0)" onclick="openSettings()">Settings</a>
+  <a class="closebtn" onclick="closeNav()">&times;</a>
+  <a onclick="openNotifications()">Notifications</a>
+  <a onclick="openForms()">Forms</a>
+  <a onclick="openSettings()">Settings</a>
 </div>
 <span onclick="openNav()">Menu</span>
 

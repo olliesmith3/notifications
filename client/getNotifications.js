@@ -2,7 +2,7 @@ $( document ).ready(function() {
   getNotifications();
 });
 
-$(function($){
+$(function(){
   setInterval(function(){
     getNotifications();
   },10000); 
@@ -27,37 +27,41 @@ function getNotifications() {
         }
       })).done(function(data){
         let notifications = JSON.parse(data);
-        for (let index = 0; index < notifications.length; index++) {
-          if (notifications[index].type == "email") {
-            $.when($.ajax({
-              type: "GET",
-              url: '/redeye/server/getEmailContent.php',
-              data: {
-                id: notifications[index].foreign_id
-              },
-              success: function(data2){
-                formatEmailHTML(notifications, objects, data2, index);
-              }
-            })).done(function(){
-              if (objects.length == notifications.length) {
-                formatNotifications(objects);
-              }
-            });
-          } else if (notifications[index].type == "calculation") {
-            $.when($.ajax({
-              type: "GET",
-              url: '/redeye/server/getCalculationContent.php',
-              data: {
-                id: notifications[index].foreign_id
-              },
-              success: function(data2){
-                formatCalculationHTML(notifications, objects, data2, index);
-              }
-            })).done(function(){
-              if (objects.length == notifications.length) {
-                formatNotifications(objects);
-              }
-            });
+        if (notifications.length == 0) {
+          noNotifications();
+        } else {
+          for (let index = 0; index < notifications.length; index++) {
+            if (notifications[index].type == "email") {
+              $.when($.ajax({
+                type: "GET",
+                url: '/redeye/server/getEmailContent.php',
+                data: {
+                  id: notifications[index].foreign_id
+                },
+                success: function(data2){
+                  formatEmailHTML(notifications, objects, data2, index);
+                }
+              })).done(function(){
+                if (objects.length == notifications.length) {
+                  formatNotifications(objects);
+                }
+              });
+            } else if (notifications[index].type == "calculation") {
+              $.when($.ajax({
+                type: "GET",
+                url: '/redeye/server/getCalculationContent.php',
+                data: {
+                  id: notifications[index].foreign_id
+                },
+                success: function(data2){
+                  formatCalculationHTML(notifications, objects, data2, index);
+                }
+              })).done(function(){
+                if (objects.length == notifications.length) {
+                  formatNotifications(objects);
+                }
+              });
+            }
           }
         }
       });
@@ -95,6 +99,10 @@ function formatEmailHTML(notifications, objects, data2, index) {
   objects.push(object);
 }
 
+function noNotifications() {
+  $("#notifications").html("<br />You do not have any unread notifications<br />");
+}
+
 function formatNotifications(objects) {
   var html = "";
   sortedNotifications = objects.sort( compare );
@@ -123,6 +131,18 @@ function markAsRead(id) {
     data: {
       id: id
     },
+    success: function(data){
+      console.log(data);
+    }
+  })).done(function(){
+    getNotifications();
+  });
+}
+
+function markAllAsRead() {
+  $.when( $.ajax({
+    type: "POST",
+    url: '/redeye/server/markAllAsRead.php',
     success: function(data){
       console.log(data);
     }
