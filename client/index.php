@@ -8,11 +8,11 @@
 </head>
 
 <body>
-<script src="NavBar.js"></script>
+<script src="index.js"></script>
 <div id="main">
 <div id="mySidenav" class="sidenav">
-  <a class="closebtn" onclick="closeNav()">&times;</a>
-  <a onclick="openNotifications()">Notifications</a>
+  <a class="closebtn" onclick="closeNav()" >&times;</a>
+  <a onclick="openNotifications()" id="notification-menu-item">Notifications</a>
   <a onclick="openForms()">Forms</a>
   <a onclick="openSettings()">Settings</a>
 </div>
