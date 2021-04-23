@@ -15,13 +15,19 @@ if ($calculation_notifications_on == "on") {
 } else {
   $calculation_notifications_on = 0;
 };
+$show_read_on = $_POST['show-read-checkbox'];
+if ($show_read_on == "on") {
+  $show_read_on = 1;
+} else {
+  $show_read_on = 0;
+};
 
-if ($stmt = $mysqli->prepare("UPDATE notification_settings SET email_notifications_on = ?, calculation_notifications_on = ? WHERE user_id_ = ?")) {
+if ($stmt = $mysqli->prepare("UPDATE notification_settings SET email_notifications_on = ?, calculation_notifications_on = ?, show_read_on = ? WHERE user_id_ = ?")) {
   if ( false===$stmt ) {
     die('prepare() failed: ' . htmlspecialchars($mysqli->error));
   }
 
-  $rc = $stmt->bind_param("sss", $email_notifications_on, $calculation_notifications_on, $user_id);
+  $rc = $stmt->bind_param("ssss", $email_notifications_on, $calculation_notifications_on, $show_read_on, $user_id);
   if ( false===$rc ) {
     die('bind_param() failed: ' . htmlspecialchars($stmt->error));
   }

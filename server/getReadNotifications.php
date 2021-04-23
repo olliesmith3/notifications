@@ -5,13 +5,13 @@ $email_notifications_on = $_GET['email_notifications_on'];
 $calculation_notifications_on = $_GET['calculation_notifications_on'];
 
 if ($email_notifications_on == 1 and $calculation_notifications_on == 1) {
-  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=0";
+  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=1 ORDER BY id LIMIT 10";
 } elseif ($email_notifications_on == 1 and $calculation_notifications_on == 0) {
-  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=0 AND NOT type = 'calculation'";
+  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=1 AND NOT type = 'calculation' ORDER BY id LIMIT 10";
 } elseif ($email_notifications_on == 0 and $calculation_notifications_on == 1) {
-  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=0 AND NOT type = 'email'";
+  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=1 AND NOT type = 'email' ORDER BY id LIMIT 10";
 } else {
-  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=0 AND NOT type = 'email' AND NOT type = 'calculation'";
+  $sql = "SELECT id, type, foreign_id FROM notifications WHERE is_read=1 AND NOT type = 'email' AND NOT type = 'calculation' ORDER BY id LIMIT 10";
 }
 
 if ($stmt = $mysqli->prepare($sql)) {

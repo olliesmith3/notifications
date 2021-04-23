@@ -2,13 +2,11 @@ $( document ).ready(function() {
   getNotifications();
 });
 
-/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
   document.getElementById("main").style.marginLeft = "250px";
 }
 
-/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.getElementById("main").style.marginLeft = "0";
@@ -33,6 +31,7 @@ function openSettings() {
 }
 
 function getNotifications() {
+  var readObjects = [];
   var objects = [];
   $.ajax({
     type: "GET",
@@ -42,6 +41,52 @@ function getNotifications() {
     },
     success: function(data3){
       let settings = JSON.parse(data3);
+      if (settings.show_read_on == 1) {
+        $.ajax({
+          type: "GET",
+          url: '/redeye/server/getReadNotifications.php',
+          data: {
+            email_notifications_on: settings.email_notifications_on,
+            calculation_notifications_on: settings.calculation_notifications_on
+          },
+          success: function(data4){
+            let readNotifications = JSON.parse(data4);
+            for (let index = 0; index < readNotifications.length; index++) {
+              if (readNotifications[index].type == "email") {
+                $.when($.ajax({
+                  type: "GET",
+                  url: '/redeye/server/getEmailContent.php',
+                  data: {
+                    id: readNotifications[index].foreign_id
+                  },
+                  success: function(data2){
+                    formatEmailHTML(readNotifications, readObjects, data2, index, true);
+                  }
+                })).done(function(){
+                  if (readObjects.length == readNotifications.length) {
+                    formatNotifications(readObjects, true);
+                  }
+                });
+              } else if (readNotifications[index].type == "calculation") {
+                $.when($.ajax({
+                  type: "GET",
+                  url: '/redeye/server/getCalculationContent.php',
+                  data: {
+                    id: readNotifications[index].foreign_id
+                  },
+                  success: function(data2){
+                    formatCalculationHTML(readNotifications, readObjects, data2, index, true);
+                  }
+                })).done(function(){
+                  if (readObjects.length == readNotifications.length) {
+                    formatNotifications(readObjects, true);
+                  }
+                });
+              }
+            }
+          } 
+        })
+      }
       $.when( $.ajax({
         type: "GET",
         url: '/redeye/server/getNotifications.php',
@@ -64,11 +109,11 @@ function getNotifications() {
                   id: notifications[index].foreign_id
                 },
                 success: function(data2){
-                  formatEmailHTML(notifications, objects, data2, index);
+                  formatEmailHTML(notifications, objects, data2, index, false);
                 }
               })).done(function(){
                 if (objects.length == notifications.length) {
-                  formatNotifications(objects);
+                  formatNotifications(objects, false);
                 }
               });
             } else if (notifications[index].type == "calculation") {
@@ -79,11 +124,11 @@ function getNotifications() {
                   id: notifications[index].foreign_id
                 },
                 success: function(data2){
-                  formatCalculationHTML(notifications, objects, data2, index);
+                  formatCalculationHTML(notifications, objects, data2, index, false);
                 }
               })).done(function(){
                 if (objects.length == notifications.length) {
-                  formatNotifications(objects);
+                  formatNotifications(objects, false);
                 }
               });
             }
@@ -104,22 +149,26 @@ function compare( a, b ) {
   return 0;
 }
 
-function formatCalculationHTML(notifications, objects, data2, index) {
+function formatCalculationHTML(notifications, objects, data2, index, is_read) {
   obj = JSON.parse(data2);
-  var row = `<tr>
-    <td>Calculation ${obj.name} was completed at ${formatDateTime(obj.timestamp_finished)}</td>
-    <td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td> 
-  </tr>`;
+  var row = `<tr><td>Calculation ${obj.name} was completed at ${formatDateTime(obj.timestamp_finished)}</td>`
+  if (is_read) {
+    row += `<td></td></tr>`;
+  } else {
+    row += `<td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td></tr>`;
+  }
   let object = {time: obj.timestamp_finished, html: row};
   objects.push(object);
 }
 
-function formatEmailHTML(notifications, objects, data2, index) {
+function formatEmailHTML(notifications, objects, data2, index, is_read) {
   obj = JSON.parse(data2);
-  let row = `<tr>
-    <td>Email with Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>
-    <td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td> 
-  </tr>`;
+  var row = `<tr><td>Email with Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>`
+  if (is_read) {
+    row += `<td></td></tr>`;
+  } else {
+    row += `<td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td></tr>`;
+  }
   let object = {time: obj.timestamp_sent, html: row};
   objects.push(object);
 }
@@ -128,7 +177,7 @@ function noNotifications() {
   $("#notifications").html("<br />You do not have any unread notifications<br />");
 }
 
-function formatNotifications(objects) {
+function formatNotifications(objects, is_read) {
   var html = "";
   sortedNotifications = objects.sort( compare );
   for (let i = 0; i < objects.length; i++) {
@@ -136,10 +185,14 @@ function formatNotifications(objects) {
   }
   var output = `<table>
   <tr>
-    <th>Notifications</th>
+    <th>${is_read ? "Read Notifications" : "Notifications"}</th>
     <th></th> 
   </tr>${html}</table>`
-  $("#notifications").html(output);
+  if (is_read) {
+    $("#readNotifications").html(output);
+  } else {
+    $("#notifications").html(output);
+  }
 }
 
 function formatDateTime(unformattedDate) {

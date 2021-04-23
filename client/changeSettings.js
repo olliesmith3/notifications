@@ -27,6 +27,9 @@ $( document ).ready(function() {
       if (settings.calculation_notifications_on == 1) {
         $('#calculation-checkbox').prop('checked', true);
       }
+      if (settings.show_read_on == 1) {
+        $('#show-read-checkbox').prop('checked', true);
+      }
     }
   })
 });

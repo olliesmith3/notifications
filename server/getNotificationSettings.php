@@ -3,7 +3,7 @@ include 'database.php';
 
 $user_id = $_GET['user_id'];
 
-if ($stmt = $mysqli->prepare("SELECT email_notifications_on, calculation_notifications_on FROM notification_settings WHERE user_id_ = ?")) {
+if ($stmt = $mysqli->prepare("SELECT email_notifications_on, calculation_notifications_on, show_read_on FROM notification_settings WHERE user_id_ = ?")) {
   if ( false===$stmt ) {
     die('prepare() failed: ' . htmlspecialchars($mysqli->error));
   }
