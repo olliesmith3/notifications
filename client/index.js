@@ -51,7 +51,7 @@ function getNotifications() {
         }
       })).done(function(data){
         let notifications = JSON.parse(data);
-        $("#notification-menu-item").html(`Notifications ${notifications.length}`);
+        $("#notification-count").html(` ${notifications.length}`);
         if (notifications.length == 0) {
           noNotifications();
         } else {
@@ -117,7 +117,7 @@ function formatCalculationHTML(notifications, objects, data2, index) {
 function formatEmailHTML(notifications, objects, data2, index) {
   obj = JSON.parse(data2);
   let row = `<tr>
-    <td>Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>
+    <td>Email with Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>
     <td><button onclick="markAsRead(${notifications[index].id})">Mark As Read</button></td> 
   </tr>`;
   let object = {time: obj.timestamp_sent, html: row};

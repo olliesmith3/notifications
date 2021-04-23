@@ -12,7 +12,7 @@
 <div id="main">
 <div id="mySidenav" class="sidenav">
   <a class="closebtn" onclick="closeNav()" >&times;</a>
-  <a onclick="openNotifications()" id="notification-menu-item">Notifications</a>
+  <a onclick="openNotifications()" id="notification-menu-item">Notifications<span id="notification-count" style="color: red;"></span></a>
   <a onclick="openForms()">Forms</a>
   <a onclick="openSettings()">Settings</a>
 </div>

@@ -1,26 +1,27 @@
 <?php
-$servername = "localhost";
-$username = "olliesmith";
-$password = "redeye";
-$dbname = "redeye";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-} 
+include 'database.php';
 
 $id = $_POST['id'];
 
-$sql = "UPDATE notifications SET is_read = 1 WHERE id = '$id'";
+if ($stmt = $mysqli->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?")) {
+  if ( false===$stmt ) {
+    die('prepare() failed: ' . htmlspecialchars($mysqli->error));
+  }
 
-if ($conn->query($sql) === TRUE) {
-  echo "Read status updated";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
+  $rc = $stmt->bind_param("s", $id);
+  if ( false===$rc ) {
+    die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+  }
 
-$conn->close();
+  $rc = $stmt->execute();
+  if ( false===$rc ) {
+    die('execute() failed: ' . htmlspecialchars($stmt->error));
+  } else {
+    echo "Email marked as read";
+  }
+
+  $stmt->close();
+} 
+
+$mysqli->close();
 ?>
