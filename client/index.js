@@ -53,35 +53,9 @@ function getNotifications() {
             let readNotifications = JSON.parse(data4);
             for (let index = 0; index < readNotifications.length; index++) {
               if (readNotifications[index].type == "email") {
-                $.when($.ajax({
-                  type: "GET",
-                  url: '/redeye/server/getEmailContent.php',
-                  data: {
-                    id: readNotifications[index].foreign_id
-                  },
-                  success: function(data2){
-                    formatEmailHTML(readNotifications, readObjects, data2, index, true);
-                  }
-                })).done(function(){
-                  if (readObjects.length == readNotifications.length) {
-                    formatNotifications(readObjects, true);
-                  }
-                });
+                getEmailContent(readNotifications, index, readObjects, true);
               } else if (readNotifications[index].type == "calculation") {
-                $.when($.ajax({
-                  type: "GET",
-                  url: '/redeye/server/getCalculationContent.php',
-                  data: {
-                    id: readNotifications[index].foreign_id
-                  },
-                  success: function(data2){
-                    formatCalculationHTML(readNotifications, readObjects, data2, index, true);
-                  }
-                })).done(function(){
-                  if (readObjects.length == readNotifications.length) {
-                    formatNotifications(readObjects, true);
-                  }
-                });
+                getCalculationContent(readNotifications, index, readObjects, true);
               }
             }
           } 
@@ -102,35 +76,9 @@ function getNotifications() {
         } else {
           for (let index = 0; index < notifications.length; index++) {
             if (notifications[index].type == "email") {
-              $.when($.ajax({
-                type: "GET",
-                url: '/redeye/server/getEmailContent.php',
-                data: {
-                  id: notifications[index].foreign_id
-                },
-                success: function(data2){
-                  formatEmailHTML(notifications, objects, data2, index, false);
-                }
-              })).done(function(){
-                if (objects.length == notifications.length) {
-                  formatNotifications(objects, false);
-                }
-              });
+              getEmailContent(notifications, index, objects, false);
             } else if (notifications[index].type == "calculation") {
-              $.when($.ajax({
-                type: "GET",
-                url: '/redeye/server/getCalculationContent.php',
-                data: {
-                  id: notifications[index].foreign_id
-                },
-                success: function(data2){
-                  formatCalculationHTML(notifications, objects, data2, index, false);
-                }
-              })).done(function(){
-                if (objects.length == notifications.length) {
-                  formatNotifications(objects, false);
-                }
-              });
+              getCalculationContent(notifications, index, objects, false);
             }
           }
         }
@@ -138,6 +86,42 @@ function getNotifications() {
     }
   })
 }
+
+function getEmailContent(notifications, index, objects, is_read) {
+  $.when($.ajax({
+    type: "GET",
+    url: '/redeye/server/getEmailContent.php',
+    data: {
+      id: notifications[index].foreign_id
+    },
+    success: function(data2){
+      formatEmailHTML(notifications, objects, data2, index, is_read);
+    }
+  })).done(function(){
+    if (objects.length == notifications.length) {
+      formatNotifications(objects, is_read);
+    }
+  })
+}
+
+
+function getCalculationContent(readNotifications, index, readObjects, is_read) {
+  $.when($.ajax({
+    type: "GET",
+    url: '/redeye/server/getCalculationContent.php',
+    data: {
+      id: readNotifications[index].foreign_id
+    },
+    success: function(data2){
+      formatCalculationHTML(readNotifications, readObjects, data2, index, is_read);
+    }
+  })).done(function(){
+    if (readObjects.length == readNotifications.length) {
+      formatNotifications(readObjects, is_read);
+    }
+  });
+};
+
 
 function compare( a, b ) {
   if ( a.time < b.time ){
