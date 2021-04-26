@@ -2,7 +2,7 @@
   <div class="flexCol">
     <form action='/redeye/server/createCalculation.php' method='post' id='calculation-form' >
       <p>
-      <input type='text' name='name' placeholder='Calulation Name' id='name' />
+      <input type='text' name='name' placeholder='Calculation Name' id='name' />
       </p>
       
       <p>
@@ -22,6 +22,14 @@
       
       <p>
       <input type='text' name='timestamp_sent' placeholder='Time Sent' id='timestamp_sent' />
+      </p>
+
+      <p>
+      <input type='number' name='min_age' placeholder='Min Age' id='min_age' />
+      </p>
+
+      <p>
+      <input type='number' name='max_age' placeholder='Max Age' id='max_age' />
       </p>
       
       <button id='submit-email'>Create Email</button>

@@ -3,7 +3,7 @@ include 'database.php';
 
 $id = $_GET['id'];
 
-if ($stmt = $mysqli->prepare("SELECT 'email' AS type, campaign_number, timestamp_sent FROM emails WHERE id = ?")) {
+if ($stmt = $mysqli->prepare("SELECT 'email' AS type, campaign_number, min_age, max_age, timestamp_sent FROM emails WHERE id = ?")) {
   if ( false===$stmt ) {
     die('prepare() failed: ' . htmlspecialchars($mysqli->error));
   }

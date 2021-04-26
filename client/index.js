@@ -147,7 +147,7 @@ function formatCalculationHTML(notifications, objects, data2, index, is_read) {
 
 function formatEmailHTML(notifications, objects, data2, index, is_read) {
   obj = JSON.parse(data2);
-  var row = `<tr><td>Email with Campaign Number ${obj.campaign_number} sent at ${formatDateTime(obj.timestamp_sent)}</td>`
+  var row = `<tr><td>Email with Campaign Number ${obj.campaign_number} sent to ages ${obj.min_age} - ${obj.max_age} at ${formatDateTime(obj.timestamp_sent)}</td>`
   if (is_read) {
     row += `<td></td></tr>`;
   } else {

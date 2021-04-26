@@ -9,3 +9,5 @@ During my 2 week work experience at RedEye, I was given a project to build a not
 - Single Page App
 - Able to create a notification for multiple different events e.g. SMS, email, cleardown, calculation
 - These events all have different attributes that need to be displayed in the notification, they are stored in an oracle database
+
+![Get Notifications Flow Chart](./public/images/getNotifications.png?raw=true "flow chart")
