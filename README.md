@@ -19,6 +19,6 @@ During my 2 week work experience at RedEye, I was given a project to build a not
 
 3) I received some feedback along the way such as being told to change my PHP syntax in order to protect against SQL injection. 
 
-<img src="./public/images/Notifications.png" alt="Notifications Page" width="90%"/>
-<img src="./public/images/Forms.png" alt="Forms Page" width="60%"/>
-<img src="./public/images/Settings.png" alt="Settings Page" width="60%"/>
+<img src="./public/images/Notifications.png" alt="Notifications Page" width="100%"/>
+<img src="./public/images/Forms.png" alt="Forms Page" width="90%"/>
+<img src="./public/images/Settings.png" alt="Settings Page" width="70%"/>
