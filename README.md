@@ -1,14 +1,14 @@
-# Notifications for RedEye
+# Notifications Tray
 
 ## Overview
 
-During my 2 week work experience at RedEye, I was given a project to build a notifications tray for one of their existing products that enables businesses to automate their marketing. For such a short project, I was not given access to the existing code so instead I asked questions about the system and built a proof of concept to demonstrate how the feature would work. For this reason, I did not build a shiny UI, just a POC as the notifications tray would be added to the existing UI. 
+During my 2 week work experience at an automated marketing company, I was given a project to build a notifications tray for one of their existing products. For such a short project, I was not given access to the existing code so instead I asked questions about the system and built a proof of concept to demonstrate how the feature would work. For this reason, I did not build a shiny UI, just a POC as the notifications tray would be added to the existing UI. 
 
 ## Requirements
 
 - Single Page
 - Can make a notification for a variety of events (e.g. SMS, email, cleardown, calculation) all with different attributes
-- Uses an SQL database and PHP and JS so that it can fit in with the current Contour tech stack. 
+- Uses an SQL database and PHP and JS so that it can fit in with the current tech stack. 
 
 ## My Approach
 
