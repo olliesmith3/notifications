@@ -11,3 +11,6 @@ During my 2 week work experience at RedEye, I was given a project to build a not
 - These events all have different attributes that need to be displayed in the notification, they are stored in an oracle database
 
 ![Get Notifications Flow Chart](./public/images/getNotifications.png?raw=true "flow chart")
+![Notifications Page](./public/images/Notifications.png?raw=true "Notifications Page")
+![Forms Page](./public/images/Forms.png?raw=true "Forms Page")
+![Settings Page](./public/images/Settings.png?raw=true "Settings Page")
