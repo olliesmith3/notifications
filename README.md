@@ -20,5 +20,8 @@ During my 2 week work experience at an automated marketing company, I was given 
 3) I received some feedback along the way such as being told to change my PHP syntax in order to protect against SQL injection. It was also suggested that instead of regularly polling the server, it would be better to create a websocket connection. This would be less computationally expensive as well as providing a more realtime flow of notifications. It was decided that for version one a polling method would be fine but I plan to build a version two in a slightly different stack that is more accomodating to websockets. The below images show the UI which was built to prove the concept. 
 
 <img src="./public/images/Notifications.png" alt="Notifications Page" width="93%"/>
+The notifications display page. Depending on the settings selected, different types of notifications (e.g. emails or calculations) can be viewed and the read notifications can be shown or hidden. 
 <img src="./public/images/Forms.png" alt="Forms Page" width="89%"/>
+This forms page is purely to demonstrate what happens when a new calculation or email is created. When this feature is implemented this will be replaced by the existing ways to create events. When the form is submitted and an entry made in the database, a trigger passes the ID and type of event into a new entry in the notifications table. From here, the information required for displaying the notification can be gathered using this reference ID.
 <img src="./public/images/Settings.png" alt="Settings Page" width="71%"/>
+
