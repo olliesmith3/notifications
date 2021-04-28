@@ -21,7 +21,9 @@ During my 2 week work experience at an automated marketing company, I was given 
 
 <img src="./public/images/Notifications.png" alt="Notifications Page" width="93%"/>
 The notifications display page. Depending on the settings selected, different types of notifications (e.g. emails or calculations) can be viewed and the read notifications can be shown or hidden. 
+
 <img src="./public/images/Forms.png" alt="Forms Page" width="89%"/>
 This forms page is purely to demonstrate what happens when a new calculation or email is created. When this feature is implemented this will be replaced by the existing ways to create events. When the form is submitted and an entry made in the database, a trigger passes the ID and type of event into a new entry in the notifications table. From here, the information required for displaying the notification can be gathered using this reference ID.
+
 <img src="./public/images/Settings.png" alt="Settings Page" width="71%"/>
 
